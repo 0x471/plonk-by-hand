@@ -1,6 +1,6 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Field101 {
-    value: u8,
+    pub value: u8,
 }
 
 impl Field101 {
@@ -49,6 +49,10 @@ impl Field101 {
 
     pub fn div(self, other: Self) -> Self {
         self.mul(other.inv())
+    }
+
+    pub fn value(&self) -> u8 {
+        self.value
     }
 }
 
