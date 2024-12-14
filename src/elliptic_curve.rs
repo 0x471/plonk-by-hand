@@ -17,6 +17,27 @@ impl Point {
         Point::Finite { x, y }
     }
 
+    pub fn add(self, other: Point) -> Point {
+        match (self, other) {
+            (Point::Infinity, p) | (p, Point::Infinity) => p,
+            (Point::Finite { x: x1, y: y1 }, Point::Finite { x: x2, y: y2 }) => {
+                if x1 == x2 && y1 == y2 {
+                    return self.double();
+                }
+                if x1 == x2 && y1 != y2 {
+                    return Point::Infinity;
+                }
+
+                let numerator = y2.sub(y1);
+                let denominator = x2.sub(x1);
+                let slope = numerator.div(denominator);
+                let x3 = slope.mul(slope).sub(x1.add(x2));
+                let y3 = slope.mul(x1.sub(x3)).sub(y1);
+                Point::Finite { x: x3, y: y3 }
+            }
+        }
+    }
+
     pub fn double(self) -> Point {
         match self {
             Point::Infinity => Point::Infinity,
@@ -34,7 +55,10 @@ impl Point {
     pub fn invert(self) -> Point {
         match self {
             Point::Infinity => Point::Infinity,
-            Point::Finite { x, y } => Point::Finite { x, y: Field101::new(0).sub(y) },
+            Point::Finite { x, y } => Point::Finite {
+                x,
+                y: Field101::new(0).sub(y),
+            },
         }
     }
 }
