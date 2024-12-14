@@ -59,8 +59,8 @@ impl Field101 {
 // Extension field F101^2
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Field101Ext {
-    a: Field101, // Real part
-    b: Field101, // Coefficient of u
+    pub a: Field101, // Real part
+    pub b: Field101, // Coefficient of u
 }
 
 impl Field101Ext {
@@ -89,7 +89,7 @@ impl Field101Ext {
     }
     
     pub fn inv(self) -> Self {
-        let denom = self.a.mul(self.a).sub(self.b.mul(self.b).mul(Field101::new(2))); // a^2 - 2b^2
+        let denom = self.a.mul(self.a).add(self.b.mul(self.b).mul(Field101::new(2))); // a^2 + 2b^2
         if denom == Field101::new(0) {
             panic!("Element has no inverse!");
         }
