@@ -55,8 +55,8 @@ fn main() {
         .map(|point| format!("({}, {})", point.x.value(), point.y.value()))
         .collect::<Vec<String>>();
 
-    let g2_as_string = format!("({}, {}u)", g2.x.a.value(), g2.y.b.value());
-    let double_g2_as_string = format!("({}, {}u)", double_g2.x.a.value(), double_g2.y.b.value());
+    let g2_as_string = format!("({}, {})", g2.x.a.value(), g2.y.b.value());
+    let double_g2_as_string = format!("({}, {})", double_g2.x.a.value(), double_g2.y.b.value());
 
     // SRS Construction
     let srs = (
