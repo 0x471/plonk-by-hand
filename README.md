@@ -28,3 +28,5 @@ Point Inversion:
 for P = (x, y), -P = (x, -y)
 
 Fun fact: Elliptic curves also have an abstract "point at infinity" which serves as the group identity.
+
+TODO: explain more :)
