@@ -4,7 +4,7 @@ pub struct Field101 {
 }
 
 impl Field101 {
-    const MODULUS: u8 = 101;
+    pub const MODULUS: u8 = 101;
 
     pub const fn new(value: i32) -> Self {
         let v = value.rem_euclid(Self::MODULUS as i32) as u8;
@@ -46,6 +46,55 @@ impl Field101 {
 
         Self::new(t)
     }
+
+    pub fn div(self, other: Self) -> Self {
+        self.mul(other.inv())
+    }
+}
+
+// Extension field F101^2
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Field101Ext {
+    a: Field101, // Real part
+    b: Field101, // Coefficient of u
+}
+
+impl Field101Ext {
+    pub const fn new(a: Field101, b: Field101) -> Self {
+        Self { a, b }
+    }
+
+    pub fn add(self, other: Self) -> Self {
+        Self {
+            a: self.a.add(other.a),
+            b: self.b.add(other.b),
+        }
+    }
+
+    pub fn sub(self, other: Self) -> Self {
+        Self {
+            a: self.a.sub(other.a),
+            b: self.b.sub(other.b),
+        }
+    }
+
+    pub fn mul(self, other: Self) -> Self {
+        let a = self.a.mul(other.a).sub(self.b.mul(other.b).mul(Field101::new(2))); // u^2 = -2
+        let b = self.a.mul(other.b).add(self.b.mul(other.a));
+        Self { a, b }
+    }
+    
+    pub fn inv(self) -> Self {
+        let denom = self.a.mul(self.a).sub(self.b.mul(self.b).mul(Field101::new(2))); // a^2 - 2b^2
+        if denom == Field101::new(0) {
+            panic!("Element has no inverse!");
+        }
+        let denom_inv = denom.inv();
+        let a = self.a.mul(denom_inv);
+        let b = self.b.mul(denom_inv).mul(Field101::new(0).sub(Field101::new(1))); // -b
+        Self { a, b }
+    }
+    
 
     pub fn div(self, other: Self) -> Self {
         self.mul(other.inv())
