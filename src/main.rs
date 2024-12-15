@@ -1,5 +1,6 @@
 mod elliptic_curve;
 mod field;
+mod circuit;
 
 use elliptic_curve::{Point, PointExt};
 use field::{Field101, Field101Ext};
